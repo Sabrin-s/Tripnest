@@ -61,30 +61,17 @@ tripnest/
 
 ---
 
-## 🚀 Quick Start & Installation
-
-### Prerequisites
-* Python 3.10 or higher
-* `pip` package manager
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/tripnest.git
-cd tripnest
-
----
-### 👤 Author & Contact Information
+👤 Author & Contact Information
 Designed & Developed with ❤️ by Sabrin S
 
 Creator: Sabrin S
 Phone: +91 6380903181
-Email: 
-
-sabrincse004@gmail.com
+Email: sabrincse004@gmail.com
 📄 License
 This project is licensed under the MIT License — see the 
 
-LICENSE
- file for details.
+LICENSE file for details.
 
 © 2026 TripNest. All Rights Reserved.
+
+
