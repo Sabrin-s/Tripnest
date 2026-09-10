@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+tripnest_chroma/
+.DS_Store
+.vscode/
+.idea/
