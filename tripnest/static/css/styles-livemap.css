@@ -1,0 +1,409 @@
+/* =========================================================
+   TripNest — Circle Live Map & Person Proximity Radar Styles
+   Leaflet Map, Companion Cards, Share Link, Animations
+   ========================================================= */
+
+/* --- Live Map Container --- */
+.live-map-wrapper {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.live-map {
+  width: 100%;
+  height: 340px;
+  background: #132023;
+  z-index: 1;
+}
+
+.map-legend {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: 10px;
+  z-index: 800;
+  background: rgba(23, 38, 42, 0.88);
+  backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.map-legend span {
+  font-size: 11px;
+  font-weight: 600;
+  color: #d1e4e2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-you { color: #4eaba4 !important; }
+.legend-companion { color: #ff785e !important; }
+.legend-place { color: #f7df88 !important; }
+
+/* Leaflet Custom Marker Popup */
+.leaflet-popup-content-wrapper {
+  background: #1f373d !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+  font-family: "DM Sans", sans-serif !important;
+  font-size: 13px !important;
+  border: 1px solid rgba(78, 171, 164, 0.3) !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 14px !important;
+}
+
+.leaflet-popup-tip {
+  background: #1f373d !important;
+}
+
+/* Custom Circle Marker Pulsing */
+.you-marker-pulse {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4eaba4;
+  box-shadow: 0 0 0 0 rgba(78, 171, 164, 0.5);
+  animation: markerPulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  border: 3px solid #ffffff;
+}
+
+.companion-marker {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff785e 0%, #f45d3e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(255, 120, 94, 0.45), 0 0 0 3px rgba(255, 120, 94, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease;
+  letter-spacing: 0.5px;
+  font-family: "DM Sans", sans-serif;
+}
+
+.companion-marker:hover {
+  transform: scale(1.15);
+}
+
+.place-marker-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f7df88;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 3px 10px rgba(247, 223, 136, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+@keyframes markerPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(78, 171, 164, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(78, 171, 164, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(78, 171, 164, 0);
+  }
+}
+
+/* --- Enhanced Companion Card with Remove --- */
+.circle-person-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: all 0.25s ease;
+  animation: companionSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.circle-person-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(78, 171, 164, 0.3);
+}
+
+@keyframes companionSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.c-person-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.c-remove-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 100, 80, 0.15);
+  border: 1px solid rgba(255, 100, 80, 0.3);
+  color: #ff9e8a;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.c-remove-btn:hover {
+  background: rgba(255, 100, 80, 0.35);
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.c-navigate-btn {
+  background: rgba(78, 171, 164, 0.2);
+  border: 1px solid rgba(78, 171, 164, 0.35);
+  color: #7ee0d8;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: "DM Sans", sans-serif;
+}
+
+.c-navigate-btn:hover {
+  background: var(--teal, #4eaba4);
+  color: #ffffff;
+}
+
+.c-direction-eta {
+  font-size: 10.5px;
+  color: #7ee0d8;
+  margin-top: 2px;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.c-direction-eta.show {
+  opacity: 1;
+}
+
+/* --- Share Link Controls --- */
+.share-link-controls {
+  background: linear-gradient(135deg, #1a2e33 0%, #132023 100%);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-top: 14px;
+  border: 1px solid rgba(78, 171, 164, 0.2);
+}
+
+.share-link-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.share-link-label span {
+  font-size: 15px;
+}
+
+.share-link-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.share-link-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #a9ddd7;
+  font: 500 12.5px "DM Sans", sans-serif;
+  padding: 8px 12px;
+  outline: none;
+}
+
+.share-link-input:focus {
+  border-color: #4eaba4;
+}
+
+.copy-link-btn {
+  background: var(--teal, #4eaba4);
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font: 600 12.5px "DM Sans", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.copy-link-btn:hover {
+  background: #3d9890;
+  transform: translateY(-1px);
+}
+
+.copy-link-btn.copied {
+  background: #2b8c83;
+}
+
+.share-quick-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.share-wa-btn,
+.share-msg-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d1e4e2;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font: 600 12px "DM Sans", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.share-wa-btn:hover {
+  background: #25d366;
+  border-color: #25d366;
+  color: #ffffff;
+}
+
+.share-msg-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* --- Share Box (Add Companion) Upgrade --- */
+.share-box {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.share-box input {
+  flex: 1;
+  min-width: 180px;
+  background: #ffffff;
+  border: 1px solid var(--line, #d6ddd9);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: 500 13px "DM Sans", sans-serif;
+  outline: none;
+  color: var(--ink, #213439);
+  transition: border-color 0.2s;
+}
+
+.share-box input:focus {
+  border-color: var(--teal, #4eaba4);
+  box-shadow: 0 0 0 3px rgba(78, 171, 164, 0.12);
+}
+
+.share-box select {
+  background: #f0f4f2;
+  border: 1px solid var(--line, #d6ddd9);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font: 500 12px "DM Sans", sans-serif;
+  cursor: pointer;
+  color: var(--ink, #213439);
+}
+
+.share-box button {
+  background: linear-gradient(135deg, #ff785e 0%, #f45d3e 100%);
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font: 600 13px "DM Sans", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(255, 120, 94, 0.3);
+  white-space: nowrap;
+}
+
+.share-box button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 120, 94, 0.45);
+}
+
+/* --- CLP Header --- */
+.clp-header h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  margin: 4px 0 6px;
+  color: var(--ink, #213439);
+  letter-spacing: -0.5px;
+}
+
+.clp-header .dest-target-name {
+  color: var(--coral, #ff785e);
+}
+
+.clp-header p {
+  font-size: 13px;
+  color: var(--muted, #7a918d);
+  margin: 0 0 12px;
+}
+
+/* --- Safe Arrival Toast Animation --- */
+@keyframes arrivalPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  .live-map {
+    height: 260px;
+  }
+
+  .share-link-row {
+    flex-direction: column;
+  }
+
+  .share-box {
+    flex-direction: column;
+  }
+
+  .share-box input {
+    min-width: auto;
+  }
+}

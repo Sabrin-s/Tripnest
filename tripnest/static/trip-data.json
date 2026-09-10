@@ -1,0 +1,8 @@
+{
+  "appName": "TripNest",
+  "concept": "An all-in-one, connection-aware travel planner",
+  "includedArrangements": ["flights", "stays", "cars and airport transfers", "tours and experiences", "visa and entry reminders"],
+  "signatureFeature": "Trip Thread: every booking is coordinated on one timeline, so changes can be handled as one plan.",
+  "worldTripAddOns": ["Health Passport", "Circle Live private location sharing", "Money Map budgeting", "insurance and entry guidance", "secure-style payment plan"],
+  "dataLayer": "Optional ChromaDB service stores account profile vectors locally; the static demo uses browser local storage when the service is not running."
+}

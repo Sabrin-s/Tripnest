@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TripNest — Everything for the journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/styles-extra.css" />
+    <link rel="stylesheet" href="css/styles-interactive.css" />
+    <link rel="stylesheet" href="css/styles-world.css" />
+    <link rel="stylesheet" href="css/styles-booking.css" />
+    <link rel="stylesheet" href="css/styles-health.css" />
+    <link rel="stylesheet" href="css/styles-features.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="css/styles-livemap.css" />
+    <link rel="stylesheet" href="css/styles-override.css?v=4" />
+    <style>
+      /* ── TRIPNEST INLINE THEME — navy + gold (no-cache, always fresh) ── */
+      :root {
+        --tn-bg:#0f1923; --tn-surface:#162130; --tn-surface2:#1c2c3e;
+        --tn-border:rgba(255,255,255,0.08); --tn-gold:#e8b84b; --tn-gold2:#f7d87c;
+        --tn-text:#eef2f7; --tn-muted:#8fa3b8; --tn-ink:#0f1923;
+      }
+      html,body{background:#0f1923!important;color:#eef2f7!important;}
+
+      /* NAV */
+      header.nav{background:rgba(15,25,35,.97)!important;backdrop-filter:blur(16px)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;position:sticky!important;top:0!important;z-index:900!important;height:68px!important;}
+      .brand{color:#eef2f7!important;}.brand span{color:#e8b84b!important;}
+      nav a{color:#8fa3b8!important;}nav a:hover{color:#eef2f7!important;}
+      .sign-in,.outline-btn{background:transparent!important;border:1px solid rgba(255,255,255,.12)!important;color:#8fa3b8!important;border-radius:100px!important;padding:8px 16px!important;transition:all .2s!important;}
+      .sign-in:hover,.outline-btn:hover{border-color:#e8b84b!important;color:#e8b84b!important;}
+      .currency-nav-select{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.08)!important;color:#8fa3b8!important;border-radius:8px!important;padding:7px 10px!important;}
+
+      /* HERO */
+      .eyebrow{color:#e8b84b!important;letter-spacing:2px!important;}
+      .hero h1,.concept h2,.split-section h2,.itinerary-section h2,.newsletter h2{color:#eef2f7!important;}
+      h1 em{color:#e8b84b!important;font-style:normal!important;}
+      .hero-copy{color:#8fa3b8!important;font-size:16px!important;line-height:1.7!important;}
+
+      /* PLANNER CARD */
+      .planner{background:#162130!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:20px!important;box-shadow:0 20px 60px rgba(0,0,0,.45)!important;overflow:hidden!important;margin-top:24px!important;}
+      .tab-row{background:#1c2c3e!important;border-bottom:1px solid rgba(255,255,255,.08)!important;padding:0 28px!important;}
+      .tab-row button{color:#8fa3b8!important;}.tab-row button.active{color:#eef2f7!important;border-bottom:2px solid #e8b84b!important;}
+      .search-box{background:#162130!important;padding:24px 28px!important;gap:16px!important;}
+      .search-box label{color:#8fa3b8!important;font-size:11px!important;font-weight:700!important;}
+      input,select{background:#1c2c3e!important;border:1px solid rgba(255,255,255,.08)!important;color:#eef2f7!important;border-radius:10px!important;padding:12px 14px!important;}
+      input:focus,select:focus{border-color:#e8b84b!important;box-shadow:0 0 0 3px rgba(232,184,75,.12)!important;outline:none!important;}
+      input::placeholder{color:#8fa3b8!important;opacity:.7!important;}
+      .search-btn{background:linear-gradient(135deg,#e8b84b,#f7d87c)!important;color:#0f1923!important;border:none!important;border-radius:10px!important;font-weight:700!important;box-shadow:0 4px 18px rgba(232,184,75,.3)!important;}
+      .search-btn:hover{transform:translateY(-2px)!important;box-shadow:0 8px 28px rgba(232,184,75,.5)!important;}
+
+      /* QUICK PILLS */
+      .quick-destination-pills{background:#162130!important;padding:12px 28px 20px!important;display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important;}
+      .quick-destination-pills span{color:#8fa3b8!important;font-size:12px!important;}
+      .quick-pill-btn{background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.08)!important;color:#eef2f7!important;border-radius:999px!important;padding:6px 14px!important;cursor:pointer!important;transition:all .2s!important;}
+      .quick-pill-btn:hover{background:rgba(232,184,75,.12)!important;border-color:#e8b84b!important;color:#e8b84b!important;}
+
+      /* PRO SUITE BANNER — properly aligned */
+      .planner-suite-banner{margin:0 28px 20px!important;background:linear-gradient(135deg,#1a2d40,#1f3a4f)!important;border:1px solid rgba(232,184,75,.3)!important;border-radius:14px!important;padding:20px 24px!important;}
+      .planner-suite-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:20px!important;flex-wrap:wrap!important;}
+      .planner-suite-title{flex:1!important;min-width:0!important;}
+      .planner-suite-badge{font-size:10px!important;font-weight:800!important;letter-spacing:1.5px!important;color:#e8b84b!important;text-transform:uppercase!important;display:block!important;margin-bottom:6px!important;}
+      .planner-suite-banner h3{margin:0 0 5px!important;font:700 20px "Playfair Display",serif!important;color:#eef2f7!important;}
+      .planner-suite-banner p{margin:0!important;font-size:13px!important;color:#8fa3b8!important;}
+      .highlight-suite-btn{background:linear-gradient(135deg,#e8b84b,#f7d87c)!important;color:#0f1923!important;border:none!important;border-radius:999px!important;padding:12px 24px!important;font:700 13.5px "DM Sans",sans-serif!important;white-space:nowrap!important;flex-shrink:0!important;cursor:pointer!important;box-shadow:0 4px 20px rgba(232,184,75,.4)!important;animation:none!important;transition:all .25s!important;}
+      .highlight-suite-btn:hover{transform:translateY(-2px)!important;box-shadow:0 8px 30px rgba(232,184,75,.6)!important;}
+      .helper{padding:0 28px 20px!important;color:#8fa3b8!important;font-size:12.5px!important;}
+
+      /* SECTIONS */
+      .itinerary-section{background:#1c2c3e!important;}
+      .itinerary-section h2{color:#eef2f7!important;}
+      .day{color:#8fa3b8!important;}.day.active{background:#e8b84b!important;color:#0f1923!important;}
+      .event-content{background:#162130!important;border:1px solid rgba(255,255,255,.08)!important;color:#eef2f7!important;}
+      .event-content b{color:#eef2f7!important;}.event-content small{color:#8fa3b8!important;}
+      .trip-total{background:#162130!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:16px!important;}
+      .trip-total p,.trip-total small{color:#8fa3b8!important;}.trip-total h3{color:#e8b84b!important;}
+      .trip-total hr{border-top:1px solid rgba(255,255,255,.08)!important;}
+      .trip-total button{background:linear-gradient(135deg,#e8b84b,#f7d87c)!important;color:#0f1923!important;border-radius:10px!important;font-weight:700!important;}
+      .trip-count b{color:#e8b84b!important;}
+      .feature-card.coral{background:linear-gradient(135deg,#2e1f1c,#3d2820)!important;border:1px solid rgba(255,127,110,.2)!important;}
+      .feature-card.blue{background:linear-gradient(135deg,#1a2d35,#203642)!important;border:1px solid rgba(78,171,164,.2)!important;}
+      .feature-card.yellow{background:linear-gradient(135deg,#2a2415,#352e18)!important;border:1px solid rgba(232,184,75,.2)!important;}
+      .feature-card h3,.feature-card span,.feature-card button{color:#eef2f7!important;}
+      .feature-card p{color:#8fa3b8!important;}
+      .route-card{background:#162130!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:12px 12px 0 rgba(232,184,75,.25)!important;color:#eef2f7!important;}
+      .route-line>span{color:#e8b84b!important;}.route-footer{border-top:1px solid rgba(255,255,255,.08)!important;}.route-footer strong{color:#e8b84b!important;}
+      .section-copy,.concept>p{color:#8fa3b8!important;}
+      .weather-card-container{background:#162130!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:20px!important;padding:28px!important;}
+      .weather-header h3,.weather-temp{color:#eef2f7!important;}
+      .weather-badge{background:rgba(232,184,75,.15)!important;border:1px solid rgba(232,184,75,.3)!important;color:#e8b84b!important;border-radius:999px!important;padding:6px 14px!important;}
+      .w-metric{background:#1c2c3e!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:12px!important;color:#eef2f7!important;}
+      .w-metric span{color:#8fa3b8!important;}
+      dialog{background:#162130!important;color:#eef2f7!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:20px!important;}
+      dialog h2{color:#eef2f7!important;}dialog::backdrop{background:rgba(5,10,18,.85)!important;}
+      .account-tabs button{color:#8fa3b8!important;}.account-tabs .active{color:#e8b84b!important;border-bottom-color:#e8b84b!important;}
+      footer{border-top:1px solid rgba(255,255,255,.08)!important;color:#8fa3b8!important;}
+      footer a{color:#eef2f7!important;text-decoration:none!important;}
+      .newsletter h2{color:#eef2f7!important;}.newsletter button{background:linear-gradient(135deg,#e8b84b,#f7d87c)!important;color:#0f1923!important;font-weight:700!important;border-radius:10px!important;}
+      #toast{background:#1c2c3e!important;border:1px solid rgba(255,255,255,.08)!important;color:#eef2f7!important;border-radius:12px!important;bottom:90px!important;right:24px!important;z-index:1001!important;}
+
+      /* AI CHAT WIDGET */
+      .ai-chat-widget-container{position:fixed!important;bottom:24px!important;right:24px!important;z-index:1000!important;display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:10px!important;pointer-events:none!important;}
+      .ai-chat-widget-container>*{pointer-events:auto!important;}
+      .omni-floating-btn{display:inline-flex!important;align-items:center!important;gap:10px!important;background:linear-gradient(135deg,#1c2b2f,#253d45)!important;color:#fff!important;border:1.5px solid rgba(232,184,75,.7)!important;border-radius:999px!important;padding:12px 20px 12px 16px!important;font:600 14px "DM Sans",sans-serif!important;cursor:pointer!important;box-shadow:0 8px 28px rgba(0,0,0,.35)!important;transition:all .25s!important;}
+      .omni-floating-btn:hover{transform:translateY(-3px)!important;border-color:#f7d87c!important;}
+      .omni-floating-sparkle{color:#e8b84b!important;}
+      .omni-floating-badge{background:linear-gradient(135deg,#e8b84b,#f7d87c)!important;color:#0f1923!important;font-size:10.5px!important;font-weight:800!important;padding:2px 8px!important;border-radius:999px!important;}
+      .ai-chat-drawer{width:min(380px,calc(100vw - 48px))!important;max-height:min(540px,calc(100vh - 120px))!important;background:#111e29!important;border:1px solid rgba(232,184,75,.25)!important;border-radius:20px!important;box-shadow:0 24px 72px rgba(0,0,0,.6)!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;transform:translateY(14px) scale(.97)!important;opacity:0!important;transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .3s cubic-bezier(.16,1,.3,1)!important;pointer-events:none!important;}
+      .ai-chat-drawer.open{transform:translateY(0) scale(1)!important;opacity:1!important;pointer-events:auto!important;}
+      .ai-chat-drawer.hidden{display:none!important;}
+      .ai-chat-drawer-header{background:linear-gradient(135deg,#152030,#1c2d3e)!important;border-bottom:1px solid rgba(232,184,75,.15)!important;padding:16px 18px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;flex-shrink:0!important;}
+      .ai-chat-badge{color:#e8b84b!important;font-size:10px!important;font-weight:800!important;}
+      .ai-chat-drawer-title h3{color:#eef2f7!important;margin:4px 0 0!important;}
+      .ai-chat-close-btn{background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.12)!important;color:#8fa3b8!important;border-radius:50%!important;width:32px!important;height:32px!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;font-size:18px!important;transition:all .2s!important;}
+      .ai-chat-close-btn:hover{background:rgba(232,184,75,.15)!important;border-color:#e8b84b!important;color:#e8b84b!important;}
+      .ai-chat-drawer-body{flex:1!important;overflow-y:auto!important;padding:16px!important;display:flex!important;flex-direction:column!important;gap:12px!important;}
+      .ai-chat-drawer-actions{display:flex!important;gap:8px!important;}
+      .voice-btn,.passport-pdf-btn{flex:1!important;padding:9px 12px!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.08)!important;background:rgba(255,255,255,.05)!important;color:#eef2f7!important;font:500 12px "DM Sans",sans-serif!important;cursor:pointer!important;transition:all .2s!important;text-align:center!important;}
+      .voice-btn:hover,.passport-pdf-btn:hover{background:rgba(232,184,75,.12)!important;border-color:#e8b84b!important;color:#e8b84b!important;}
+      .ai-prompts{display:flex!important;flex-direction:column!important;gap:6px!important;}
+      .ai-prompts span{font-size:10.5px!important;font-weight:700!important;color:#8fa3b8!important;text-transform:uppercase!important;display:block!important;}
+      .ai-prompts button{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.08)!important;color:#eef2f7!important;border-radius:10px!important;padding:9px 12px!important;font:500 12.5px "DM Sans",sans-serif!important;cursor:pointer!important;text-align:left!important;transition:all .2s!important;}
+      .ai-prompts button:hover{background:rgba(232,184,75,.1)!important;border-color:rgba(232,184,75,.4)!important;color:#f7d87c!important;}
+      .ai-response{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:12px!important;padding:14px!important;font-size:13px!important;color:#eef2f7!important;line-height:1.6!important;min-height:80px!important;}
+      .ai-response b{color:#e8b84b!important;display:block!important;margin-bottom:4px!important;font-size:11px!important;text-transform:uppercase!important;}
+      .ai-chat-drawer-footer{padding:12px 14px 14px!important;border-top:1px solid rgba(255,255,255,.08)!important;background:rgba(0,0,0,.15)!important;flex-shrink:0!important;}
+      .ai-chat-form{display:flex!important;gap:8px!important;align-items:center!important;}
+      .ai-input-wrap{flex:1!important;display:flex!important;align-items:center!important;background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:12px!important;padding:0 12px!important;transition:border-color .2s!important;}
+      .ai-input-wrap:focus-within{border-color:#e8b84b!important;box-shadow:0 0 0 3px rgba(232,184,75,.1)!important;}
+      .ai-input-icon{font-size:14px!important;margin-right:6px!important;opacity:.7!important;}
+      #aiInput{background:transparent!important;border:none!important;color:#eef2f7!important;font:14px "DM Sans",sans-serif!important;padding:10px 0!important;width:100%!important;outline:none!important;box-shadow:none!important;}
+      #aiInput::placeholder{color:#8fa3b8!important;opacity:.7!important;}
+      .ai-chat-submit{background:linear-gradient(135deg,#e8b84b,#f7d87c)!important;color:#0f1923!important;border:none!important;border-radius:10px!important;width:38px!important;height:38px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;font-weight:700!important;cursor:pointer!important;flex-shrink:0!important;transition:all .2s!important;}
+      .ai-chat-submit:hover{transform:scale(1.08)!important;}
+
+      /* SCROLLBAR */
+      ::-webkit-scrollbar{width:6px;height:6px;}
+      ::-webkit-scrollbar-track{background:rgba(255,255,255,.03);}
+      ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px;}
+      ::-webkit-scrollbar-thumb:hover{background:rgba(232,184,75,.35);}
+
+      /* RESPONSIVE */
+      @media(max-width:768px){
+        .planner-suite-header{flex-direction:column!important;align-items:flex-start!important;}
+        .highlight-suite-btn{width:100%!important;text-align:center!important;}
+        .ai-chat-widget-container{bottom:16px!important;right:16px!important;}
+      }
+      @media(max-width:480px){.omni-floating-label{display:none!important;}}
+
+      /* ── THEME TOGGLE BUTTON ── */
+      .theme-toggle-btn {
+        display:inline-flex; align-items:center; gap:6px;
+        background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+        color:#eef2f7; border-radius:999px; padding:7px 14px;
+        font:600 12.5px "DM Sans",sans-serif; cursor:pointer;
+        transition:all .25s; white-space:nowrap;
+      }
+      .theme-toggle-btn:hover{background:rgba(232,184,75,.15);border-color:#e8b84b;color:#e8b84b;}
+      .theme-toggle-icon{font-size:14px;}
+
+      /* ── OMNI SUITE MODAL — CENTERED ── */
+      dialog.omni-suite-modal {
+        position:fixed!important;
+        inset:0!important;
+        margin:auto!important;
+        width:min(95vw,1240px)!important;
+        height:min(88vh,860px)!important;
+        max-width:1240px!important;
+        max-height:860px!important;
+        border:none!important;
+        border-radius:20px!important;
+        padding:0!important;
+        overflow:hidden!important;
+        z-index:1050!important;
+        transform:none!important;
+        top:auto!important; left:auto!important;
+      }
+      dialog.omni-suite-modal::backdrop{
+        background:rgba(5,10,18,.82)!important;
+        backdrop-filter:blur(10px)!important;
+      }
+
+      /* ── LIGHT THEME (data-theme=light on html) ── */
+      html[data-theme="light"] body{background:#f8f5ed!important;color:#213439!important;}
+      html[data-theme="light"] header.nav{background:rgba(255,253,248,.96)!important;border-bottom:1px solid #dae0da!important;}
+      html[data-theme="light"] .brand{color:#213439!important;}
+      html[data-theme="light"] .brand span{color:#ff785e!important;}
+      html[data-theme="light"] nav a{color:#65777a!important;}
+      html[data-theme="light"] nav a:hover{color:#213439!important;}
+      html[data-theme="light"] .sign-in,.html[data-theme="light"] .outline-btn{border-color:#dae0da!important;color:#65777a!important;}
+      html[data-theme="light"] .sign-in:hover{border-color:#ff785e!important;color:#ff785e!important;}
+      html[data-theme="light"] .currency-nav-select{background:#fff!important;border-color:#dae0da!important;color:#213439!important;}
+      html[data-theme="light"] .theme-toggle-btn{background:#fff!important;border-color:#dae0da!important;color:#213439!important;}
+      html[data-theme="light"] .theme-toggle-btn:hover{border-color:#ff785e!important;color:#ff785e!important;}
+      html[data-theme="light"] .eyebrow{color:#ff785e!important;}
+      html[data-theme="light"] .hero h1,html[data-theme="light"] .concept h2,html[data-theme="light"] .split-section h2,html[data-theme="light"] .itinerary-section h2,html[data-theme="light"] .newsletter h2{color:#213439!important;}
+      html[data-theme="light"] h1 em{color:#ff785e!important;}
+      html[data-theme="light"] .hero-copy{color:#65777a!important;}
+      html[data-theme="light"] .planner{background:#fffdf8!important;border-color:#dae0da!important;box-shadow:0 15px 36px rgba(82,100,91,.1)!important;}
+      html[data-theme="light"] .tab-row{background:#fffdf8!important;border-bottom-color:#dae0da!important;}
+      html[data-theme="light"] .tab-row button{color:#65777a!important;}
+      html[data-theme="light"] .tab-row button.active{color:#213439!important;border-bottom-color:#ff785e!important;}
+      html[data-theme="light"] .search-box{background:#fffdf8!important;}
+      html[data-theme="light"] .search-box label{color:#65777a!important;}
+      html[data-theme="light"] input,html[data-theme="light"] select{background:#fff!important;border-color:#dae0da!important;color:#213439!important;}
+      html[data-theme="light"] input::placeholder{color:#65777a!important;}
+      html[data-theme="light"] .search-btn{background:#ff785e!important;color:#fff!important;box-shadow:0 4px 18px rgba(255,120,94,.3)!important;}
+      html[data-theme="light"] .quick-destination-pills{background:#fffdf8!important;}
+      html[data-theme="light"] .quick-destination-pills span{color:#65777a!important;}
+      html[data-theme="light"] .quick-pill-btn{background:transparent!important;border-color:#dae0da!important;color:#213439!important;}
+      html[data-theme="light"] .quick-pill-btn:hover{background:#fff0ec!important;border-color:#ff785e!important;color:#ff785e!important;}
+      html[data-theme="light"] .planner-suite-banner{background:linear-gradient(135deg,#1c2e32,#28444a)!important;border-color:rgba(255,120,94,.35)!important;}
+      html[data-theme="light"] .planner-suite-badge{color:#ffa08d!important;}
+      html[data-theme="light"] .planner-suite-banner h3{color:#fff!important;}
+      html[data-theme="light"] .planner-suite-banner p{color:#b7c5c1!important;}
+      html[data-theme="light"] .highlight-suite-btn{background:#ff785e!important;color:#fff!important;box-shadow:0 4px 20px rgba(255,120,94,.4)!important;}
+      html[data-theme="light"] .helper{color:#65777a!important;}
+      html[data-theme="light"] .weather-card-container{background:#fffdf8!important;border-color:#dae0da!important;}
+      html[data-theme="light"] .weather-header h3,.html[data-theme="light"] .weather-temp{color:#213439!important;}
+      html[data-theme="light"] .weather-badge{background:#fff0ec!important;border-color:#ff785e!important;color:#ff785e!important;}
+      html[data-theme="light"] .w-metric{background:#f0ede3!important;border-color:#dae0da!important;color:#213439!important;}
+      html[data-theme="light"] .itinerary-section{background:#eef0e8!important;}
+      html[data-theme="light"] .day{color:#65777a!important;}
+      html[data-theme="light"] .day.active{background:#213439!important;color:#fff!important;}
+      html[data-theme="light"] .event-content{background:#fffdf8!important;border-color:#e5ebe9!important;color:#213439!important;}
+      html[data-theme="light"] .trip-total{background:#fffdf8!important;border-color:#dae0da!important;}
+      html[data-theme="light"] .trip-total h3{color:#ff785e!important;}
+      html[data-theme="light"] .trip-count b{color:#ff785e!important;}
+      html[data-theme="light"] .trip-total button{background:#213439!important;color:#fff!important;}
+      html[data-theme="light"] .route-card{background:#213439!important;color:#f4f6ed!important;box-shadow:12px 12px 0 #f4ce60!important;border:none!important;}
+      html[data-theme="light"] .route-line>span{color:#f4ce60!important;}
+      html[data-theme="light"] .route-footer strong{color:#f4ce60!important;}
+      html[data-theme="light"] .feature-card.coral{background:#ffad9b!important;border:none!important;}
+      html[data-theme="light"] .feature-card.blue{background:#a9ddd7!important;border:none!important;}
+      html[data-theme="light"] .feature-card.yellow{background:#f8df89!important;border:none!important;}
+      html[data-theme="light"] .feature-card h3,.html[data-theme="light"] .feature-card span,.html[data-theme="light"] .feature-card button{color:#213439!important;}
+      html[data-theme="light"] dialog{background:#fffdf8!important;color:#213439!important;border-color:#dae0da!important;}
+      html[data-theme="light"] dialog h2{color:#213439!important;}
+      html[data-theme="light"] .newsletter h2{color:#213439!important;}
+      html[data-theme="light"] .newsletter button{background:#ff785e!important;color:#fff!important;}
+      html[data-theme="light"] footer{color:#65777a!important;border-top-color:#dae0da!important;}
+      html[data-theme="light"] footer a{color:#213439!important;}
+      html[data-theme="light"] #toast{background:#213439!important;color:#fff!important;}
+      html[data-theme="light"] .omni-floating-btn{background:linear-gradient(135deg,#1c2b2f,#294248)!important;border-color:rgba(255,120,94,.7)!important;}
+      html[data-theme="light"] .omni-floating-sparkle{color:#ffa08d!important;}
+      html[data-theme="light"] .omni-floating-badge{background:linear-gradient(135deg,#ff785e,#f4ce60)!important;color:#17272a!important;}
+      html[data-theme="light"] ::-webkit-scrollbar-thumb{background:rgba(33,52,57,.2);}
+      html[data-theme="light"] ::-webkit-scrollbar-thumb:hover{background:rgba(255,120,94,.4);}
+
+      /* ── ENHANCED FOOTER STYLING ── */
+      footer.main-site-footer {
+        border-top: 1px solid rgba(255,255,255,0.12)!important;
+        padding: 36px 0 42px!important;
+        display: flex!important;
+        justify-content: space-between!important;
+        align-items: flex-start!important;
+        flex-wrap: wrap!important;
+        gap: 24px!important;
+        color: #94a3b8!important;
+        font-size: 13px!important;
+      }
+      .footer-col { display: flex; flex-direction: column; gap: 6px; }
+      .footer-tagline { margin: 4px 0 0; color: #64748b; font-size: 13px; }
+      .footer-col-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #ff785e; font-weight: 700; }
+      .creator-name { font-size: 15px; color: #e2e8f0; font-weight: 700; }
+      .contact-details { display: flex; flex-direction: column; gap: 4px; margin-top: 2px; }
+      .contact-item { color: #cbd5e1!important; text-decoration: none!important; font-size: 13px; transition: color 0.2s; }
+      .contact-item:hover { color: #ff785e!important; }
+      .copyright-col { align-self: center; text-align: right; }
+
+      html[data-theme="light"] footer.main-site-footer { border-top-color: #dae0da!important; color: #65777a!important; }
+      html[data-theme="light"] .creator-name { color: #213439!important; }
+      html[data-theme="light"] .contact-item { color: #65777a!important; }
+      html[data-theme="light"] .contact-item:hover { color: #ff785e!important; }
+    </style>
+  </head>
+
+  <script>
+    /* Theme bootstrap & toggle handler */
+    (function(){
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('tn-theme', theme);
+        var btn = document.getElementById('themeToggleBtn');
+        if (btn) {
+          if (theme === 'light') {
+            btn.innerHTML = '<span class="theme-toggle-icon">☀️</span> <span class="theme-toggle-label">Light</span>';
+            btn.title = "Switch to Dark mode";
+          } else {
+            btn.innerHTML = '<span class="theme-toggle-icon">🌙</span> <span class="theme-toggle-label">Dark</span>';
+            btn.title = "Switch to Light mode";
+          }
+        }
+      }
+
+      var saved = localStorage.getItem('tn-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+
+      document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(saved);
+        var btn = document.getElementById('themeToggleBtn');
+        if (btn) {
+          btn.addEventListener('click', function() {
+            var current = document.documentElement.getAttribute('data-theme') || 'dark';
+            var next = current === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+          });
+        }
+      });
+    })();
+  </script>
+
+  <body>
+
+    <header class="nav wrap">
+      <a class="brand" href="#top" aria-label="TripNest home"><span>✦</span> tripnest</a>
+      <nav>
+        <a href="#planner">Plan</a>
+        <a href="#locationPanel" id="navLiveMapLink">🗺️ Live Map</a>
+        <a href="#weatherSection">Weather</a>
+        <a href="#worldExplorer">World 200 Places</a>
+        <a href="#wizardSection">Trip Wizard</a>
+        <a href="#itinerary">My trip</a>
+        <a href="#essentials">Circle Live</a>
+      </nav>
+      <div class="nav-actions">
+        <select id="currencySelector" class="currency-nav-select" title="Change Currency">
+          <option value="USD">USD ($) · United States</option>
+          <option value="INR" selected>INR (₹) · India</option>
+          <option value="EUR">EUR (€) · Europe</option>
+          <option value="GBP">GBP (£) · United Kingdom</option>
+          <option value="JPY">JPY (¥) · Japan</option>
+          <option value="AED">AED (د.إ) · UAE</option>
+          <option value="SGD">SGD (S$) · Singapore</option>
+          <option value="AUD">AUD (A$) · Australia</option>
+          <option value="CAD">CAD (C$) · Canada</option>
+          <option value="CHF">CHF (Fr) · Switzerland</option>
+          <option value="KRW">KRW (₩) · South Korea</option>
+          <option value="THB">THB (฿) · Thailand</option>
+          <option value="MYR">MYR (RM) · Malaysia</option>
+          <option value="IDR">IDR (Rp) · Indonesia</option>
+          <option value="TRY">TRY (₺) · Turkey</option>
+          <option value="BRL">BRL (R$) · Brazil</option>
+          <option value="MXN">MXN ($) · Mexico</option>
+          <option value="ZAR">ZAR (R) · South Africa</option>
+          <option value="EGP">EGP (£) · Egypt</option>
+          <option value="NPR">NPR (रू) · Nepal</option>
+          <option value="LKR">LKR (₨) · Sri Lanka</option>
+          <option value="PKR">PKR (₨) · Pakistan</option>
+          <option value="OMR">OMR (ر.ع.) · Oman</option>
+          <option value="QAR">QAR (ر.ق) · Qatar</option>
+          <option value="VND">VND (₫) · Vietnam</option>
+          <option value="CNY">CNY (¥) · China</option>
+          <option value="HKD">HKD (HK$) · Hong Kong</option>
+          <option value="NOK">NOK (kr) · Norway / Iceland</option>
+          <option value="SEK">SEK (kr) · Sweden</option>
+          <option value="DKK">DKK (kr) · Denmark</option>
+          <option value="CZK">CZK (Kč) · Czech Republic</option>
+          <option value="PLN">PLN (zł) · Poland</option>
+          <option value="HUF">HUF (Ft) · Hungary</option>
+          <option value="NZD">NZD (NZ$) · New Zealand</option>
+          <option value="MAD">MAD (د.م.) · Morocco</option>
+          <option value="KES">KES (KSh) · Kenya</option>
+          <option value="TZS">TZS (TSh) · Tanzania</option>
+          <option value="PEN">PEN (S/) · Peru</option>
+          <option value="ARS">ARS ($) · Argentina</option>
+          <option value="CUP">CUP ($) · Cuba</option>
+          <option value="MVR">MVR (Rf) · Maldives</option>
+          <option value="KHR">KHR (៛) · Cambodia</option>
+          <option value="PGK">PGK (K) · Papua New Guinea</option>
+        </select>
+        <button class="sign-in" id="openLiveMapBtn" style="border-color:#ff785e;color:#ff785e;font-weight:700;">🗺️ Live Map</button>
+        <button class="sign-in" id="openGlobeBtn">🌐 3D Globe</button>
+        <button class="sign-in" id="openFlightRadarBtn">✈ Flight Radar</button>
+        <button class="sign-in" id="accountBtn">Sign in</button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light / Dark mode" aria-label="Toggle theme">
+          <span class="theme-toggle-icon">🌙</span>
+          <span class="theme-toggle-label">Dark</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero wrap">
+        <p class="eyebrow">One beautiful itinerary. Zero loose ends.</p>
+        <h1>The whole world,<br /><em>neatly arranged.</em></h1>
+        <p class="hero-copy">Build a complete journey around a single idea. Live weather conditions, 200 world destinations, distance-aware spots in kilometers, food traditions, stays, flights, and live companion tracking—all in one calm place.</p>
+        <div class="hero-art" aria-hidden="true"><span class="sun"></span><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="plane">✈</span><span class="pin pin-one">●</span><span class="pin pin-two">●</span></div>
+      </section>
+
+      <!-- Main Planner Search Box with Autocomplete -->
+      <section class="planner wrap" id="planner">
+        <div class="tab-row" role="tablist" aria-label="Travel booking type">
+          <button class="active" data-tab="trip">✦ Plan a trip</button>
+          <button data-tab="flight">✈ Flights</button>
+          <button data-tab="stay">⌂ Stays</button>
+          <button data-tab="places">📍 Explore Places & Distances</button>
+          <button data-tab="tour">◌ Experiences & insights</button>
+        </div>
+
+        <form id="searchForm" class="search-box">
+          <div class="search-field-group">
+            <label for="destination">Where are you going?</label>
+            <div class="autocomplete-wrapper">
+              <input id="destination" type="text" autocomplete="off" value="Agra, India" placeholder="Type city or country (e.g. Agra, Kyoto, Dubai, Paris)..." />
+              <ul id="suggestions" class="suggestions-list hidden" role="listbox"></ul>
+            </div>
+          </div>
+          <label>When?<button id="datePickerBtn" class="date-trigger" type="button"><span id="dateLabel">18–25 October 2026</span><b>⌄</b></button></label>
+          <label>Who’s going?<select id="travelers"><option>2 travelers</option><option>1 traveler</option><option>3 travelers</option><option>4 travelers</option></select></label>
+          <button class="search-btn" type="submit">Design my trip <span>→</span></button>
+        </form>
+        <div class="quick-destination-pills">
+          <span>Popular guides:</span>
+          <button type="button" class="quick-pill-btn" data-guide-place="Agra, India">🏛️ Agra (Taj Mahal)</button>
+          <button type="button" class="quick-pill-btn" data-guide-place="Lisbon, Portugal">🚋 Lisbon</button>
+          <button type="button" class="quick-pill-btn" data-guide-place="Kyoto, Japan">⛩️ Kyoto</button>
+          <button type="button" class="quick-pill-btn" data-guide-place="Dubai, United Arab Emirates">🏙️ Dubai</button>
+          <button type="button" class="quick-pill-btn" data-guide-place="Paris, France">🥐 Paris</button>
+        </div>
+
+        <!-- Integrated Pro Suite & Innovation Lab Featured Banner -->
+        <div class="planner-suite-banner" id="plannerSuiteBanner">
+          <div class="planner-suite-header">
+            <div class="planner-suite-title">
+              <span class="planner-suite-badge">✦ PRO SUITE & INNOVATION LAB</span>
+              <h3>27 Autonomous AI & Travel Intelligence Tools</h3>
+              <p>3D World Globe, Live Flight Radar, Jet Lag Reset, Carbon Offset, Offline Passport PDF, Visa Rules & 21 more tools.</p>
+            </div>
+            <button class="sign-in highlight-suite-btn" id="openOmniSuiteBtn">✦ Launch Pro Suite (27 Tools)</button>
+          </div>
+        </div>
+        <p class="helper" id="searchMessage">Check the climate forecast first, then explore 200 global places and handpicked spots below.</p>
+      </section>
+
+      <!-- 1. LIVE WEATHER & CLIMATE CONDITIONS -->
+      <section class="wrap weather-section" id="weatherSection">
+        <div class="weather-card-container">
+          <div class="weather-header">
+            <div>
+              <p class="eyebrow">DESTINATION CLIMATE & FORECAST</p>
+              <h3>Current Weather in <span id="weatherCity">Agra, India</span></h3>
+            </div>
+            <span class="weather-badge" id="weatherConditionBadge">☀️ Clear & Sunny</span>
+          </div>
+          <div class="weather-body" id="weatherBody">
+            <div class="weather-main-stat">
+              <div class="weather-big-icon" id="weatherIcon">☀️</div>
+              <div class="weather-temp-wrap">
+                <span class="weather-temp" id="weatherTemp">28°C</span>
+                <span class="weather-feels" id="weatherFeels">Feels like 29°C</span>
+              </div>
+            </div>
+            <div class="weather-metrics">
+              <div class="w-metric"><span>💧 Humidity</span><b id="weatherHumidity">48%</b></div>
+              <div class="w-metric"><span>💨 Wind</span><b id="weatherWind">8 km/h</b></div>
+              <div class="w-metric"><span>☀️ UV Index</span><b id="weatherUV">7 (High)</b></div>
+              <div class="w-metric"><span>👓 Best Time</span><b id="weatherBestTime">Sunrise & Late Afternoon</b></div>
+            </div>
+            <div class="weather-forecast-days" id="weatherDays">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+          <div class="weather-action-bar">
+            <div class="w-action-text">
+              <span>✦ Perfect climate to explore world destinations and city spots below ↓</span>
+            </div>
+            <button id="jumpToPlacesBtn" class="weather-explore-btn" type="button">
+              Explore 200 Places & Spots in <span class="dest-target-name">Agra</span> Below ↓
+            </button>
+            <button id="openPackingBtn" class="weather-share-btn" type="button">🧳 Climate Packing</button>
+            <button id="openRainCheckBtn" class="weather-share-btn" type="button">☔ Rain Check Plan B</button>
+            <button id="shareLiveMapBtn" class="weather-share-btn" type="button">Share Live Map with Favorite</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. EXPLORE THE WORLD: 50 PLACES TO MAKE YOUR NEXT CHAPTER (PLACED DIRECTLY UNDER WEATHER) -->
+      <section class="world-explorer" id="worldExplorer">
+        <div class="wrap">
+          <div class="explorer-head">
+            <div>
+              <p class="eyebrow">EXPLORE THE WORLD</p>
+              <h2>200 places to make<br />your next chapter.</h2>
+            </div>
+            <p>Choose a country, discover a real place with full history, famous foods and distances, then carry it straight into your booking plan.</p>
+          </div>
+          <div class="featured-places">
+            <article class="feature-place"><img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80" alt="Taj Mahal in Agra" /><div><span>INDIA</span><h3>Agra</h3><button data-guide-place="Agra, India">Explore Agra Guide 📖</button></div></article>
+            <article class="feature-place"><img src="https://images.unsplash.com/photo-1509840841025-9088ba78a826?auto=format&fit=crop&w=900&q=80" alt="Lisbon city" /><div><span>PORTUGAL</span><h3>Lisbon</h3><button data-guide-place="Lisbon, Portugal">Explore Lisbon Guide 📖</button></div></article>
+            <article class="feature-place"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80" alt="Dubai skyline" /><div><span>UNITED ARAB EMIRATES</span><h3>Dubai</h3><button data-guide-place="Dubai, United Arab Emirates">Explore Dubai Guide 📖</button></div></article>
+          </div>
+          <div class="explorer-controls">
+            <input id="placeSearch" placeholder="Search city or country" />
+            <div id="continentFilters" class="continent-filters"></div>
+          </div>
+          <div class="place-grid" id="placeGrid"></div>
+          <button class="load-more" id="loadMore">Show more places ↓</button>
+        </div>
+      </section>
+
+      <!-- 3. STEP-BY-STEP TRIP BUILDER & CITY PLACES EXPLORER -->
+      <section class="wrap wizard-section" id="wizardSection">
+        <div class="wizard-container">
+          <div class="wizard-header">
+            <div>
+              <p class="eyebrow">STEP-BY-STEP TRIP BUILDER</p>
+              <h2 id="wizardHeading">Assemble your journey to <span class="dest-target-name">Agra</span></h2>
+            </div>
+            <div class="wizard-steps-nav">
+              <button class="w-step-btn active" data-step="0"><span class="step-num">1</span> ✈ Flight</button>
+              <button class="w-step-btn" data-step="1"><span class="step-num">2</span> ⌂ Hotel</button>
+              <button class="w-step-btn" data-step="2"><span class="step-num">3</span> 📍 Explore Places & Distances <span id="favCountBadge" class="fav-count-pill">0</span></button>
+              <button class="w-step-btn" data-step="3"><span class="step-num">4</span> ◌ Experience</button>
+            </div>
+          </div>
+
+          <!-- Filter & Distance Toolbar for Places Step -->
+          <div id="placesFilterBar" class="places-filter-toolbar hidden">
+            <div class="places-filter-chips">
+              <button class="place-filter-btn active" data-place-filter="all">All Spots</button>
+              <button class="place-filter-btn" data-place-filter="must-see">✦ Must-See</button>
+              <button class="place-filter-btn" data-place-filter="hidden-gem">☕ Hidden Gems</button>
+              <button class="place-filter-btn" data-place-filter="view">📸 Best Views</button>
+              <span class="filter-divider">|</span>
+              <!-- Distance in Kilometers filters -->
+              <button class="distance-filter-btn" data-distance-filter="near">🟢 Near (&lt; 2 km)</button>
+              <button class="distance-filter-btn" data-distance-filter="moderate">🟡 Moderate (2–10 km)</button>
+              <button class="distance-filter-btn" data-distance-filter="far">🔵 Far (&gt; 15 km)</button>
+            </div>
+            <div class="places-toolbar-actions">
+              <button id="viewCityGuideBtn" class="city-guide-trigger-btn">📖 View Full City Guide</button>
+              <button id="selectAllFavsBtn" class="select-all-favs-btn">❤️ Select Top Favorites</button>
+            </div>
+          </div>
+
+          <div class="wizard-body">
+            <div class="wizard-cards-grid" id="wizardCards"></div>
+          </div>
+
+          <div class="wizard-footer">
+            <div class="wizard-status-info">
+              <span id="wizardStepLabel">Step 1 of 4: Select your transport to <b class="dest-target-name">Agra</b></span>
+            </div>
+            <div class="wizard-actions">
+              <button id="wizardBack" class="wizard-btn-back hidden">← Back</button>
+              <button id="wizardNext" class="wizard-btn-next">Next: Select Hotel →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap concept" id="discover">
+        <div><p class="eyebrow">Meet the Trip Thread</p><h2>Every booking becomes<br />part of the story.</h2></div>
+        <p>Instead of a pile of confirmations, TripNest creates a living route with exact kilometer distances and weather awareness. It spots gaps, prevents impossible connections, and quietly proposes the things that make a trip feel effortless.</p>
+      </section>
+
+      <section class="wrap experience-grid" aria-label="Trip arrangements">
+        <article class="feature-card coral"><span>01</span><h3>Connection-aware bookings</h3><p>Flight delayed? Your airport transfer and first-night check-in adjust as a single plan.</p><button data-add="Airport transfer">Add transfer <b>+</b></button></article>
+        <article class="feature-card blue"><span>02</span><h3>A day, not a list</h3><p>See your tickets, timed tours and kilometer distances as a beautifully paced day.</p><button data-add="Pastel de nata workshop">Add experience <b>+</b></button></article>
+        <article class="feature-card yellow"><span>03</span><h3>The travel concierge</h3><p>Visa reminders, restaurant-ready routes and one-tap support appear just when needed.</p><button data-add="Visa & entry check">Check entry <b>+</b></button></article>
+      </section>
+
+      <section class="wrap split-section">
+        <div class="route-card"><div class="route-top"><span>YOUR ROUTE</span><button id="shuffleRoute">Shuffle ✦</button></div><div class="route-line"><div><i></i><b id="routeStart">Delhi</b><small>18 Oct · 07:00</small></div><span>✈</span><div><i></i><b id="routeEnd">Agra</b><small>18 Oct · 08:40</small></div></div><div class="route-footer"><span>Express Rail / Air · 1h 40m</span><strong id="routePrice">From $45</strong></div></div>
+        <div><p class="eyebrow">A smarter starting point</p><h2>Plan with feeling,<br />book with confidence.</h2><p class="section-copy">Answer a few human questions—slow mornings or packed days, a neighborhood café or a big-ticket museum—and receive a complete, editable trip with transparent choices.</p><button class="outline-btn" id="buildMood">Build by travel mood →</button></div>
+      </section>
+
+      <!-- Living Itinerary + Trip Summary Total Card with Inter-Place Kilometers -->
+      <section class="wrap itinerary-section" id="itinerary">
+        <div class="section-head">
+          <div><p class="eyebrow">Your living itinerary</p><h2 id="itineraryTitle">Agra, at your pace.</h2></div>
+          <div class="trip-count"><b id="itemCount">4</b> arrangements<br />in your thread</div>
+        </div>
+        <div class="itinerary-layout">
+          <div class="days">
+            <button class="day active" data-day="0"><span>Sat</span><b>18</b><small>Arrival</small></button>
+            <button class="day" data-day="1"><span>Sun</span><b>19</b><small>Taj Mahal</small></button>
+            <button class="day" data-day="2"><span>Mon</span><b>20</b><small>Mehtab Bagh</small></button>
+            <button class="day" data-day="3"><span>Tue</span><b>21</b><small>Sadar Food</small></button>
+          </div>
+          <div class="schedule" id="schedule"></div>
+          
+          <!-- Real-time Interactive Trip Total Summary Box -->
+          <aside class="trip-total-summary-card">
+            <div class="summary-badge">TRIP SUMMARY</div>
+            <h3 id="summaryTotal">$986</h3>
+            <small id="summaryTravelerCount">for 2 travelers · all taxes included</small>
+            <hr />
+            <div class="summary-items-list" id="summarySelectedItems">
+              <div class="summary-row"><span class="sum-name">✈ Transport</span><b class="sum-price" id="sumFlightPrice">$90</b></div>
+              <div class="summary-row"><span class="sum-name">⌂ Stay · 4 nights</span><b class="sum-price" id="sumStayPrice">$410</b></div>
+              <div class="summary-row"><span class="sum-name">📍 Favorite Places</span><b class="sum-price" id="sumPlacesCount" style="color: var(--teal);">0 spots</b></div>
+              <div class="summary-row" id="sumTourRow"><span class="sum-name">◌ Experiences</span><b class="sum-price" id="sumTourPrice">$0</b></div>
+            </div>
+            <hr />
+            <div class="summary-total-row"><span>Total estimated</span><strong id="summaryGrandTotal">$986</strong></div>
+            <button id="openPaymentDrawerBtn" class="pay-drawer-trigger-btn">Review & Pay →</button>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Essentials with Live Person / Companion Distance Proximity in Circle Live -->
+      <section class="wrap essentials" id="essentials">
+        <div class="essentials-head"><div><p class="eyebrow">TRIPCARE BY MONDEE TECH PRIVATE LIMITED</p><h2>Travel well, wherever<br />the world takes you.</h2></div><p>Important arrangements that are usually scattered across apps—now safely considered as part of your trip.</p></div>
+        <div class="essential-grid">
+          <article><span>✚</span><h3>Health Passport</h3><p>Keep emergency contacts, allergies, insurance details and destination-specific health reminders together.</p><button data-panel="healthPanel">Set up health profile →</button></article>
+          <article><span>⌖</span><h3>Circle Live & Distance</h3><p>Live kilometer proximity of your travel companions and friends nearby.</p><button data-panel="locationPanel">Open live distance radar →</button></article>
+          <article><span>◈</span><h3>Money Map</h3><p>See the real trip total, category budgets, payment milestones and a daily spend guide in one currency.</p><button data-panel="budgetPanel">Open money plan →</button></article>
+        </div>
+        <div class="care-panel" id="healthPanel">
+          <div><p class="eyebrow">HEALTH PASSPORT</p><h3>Travel health, made ready.</h3><p>Saved locally in this demo. Add the details you want with you in an emergency.</p></div>
+          <form id="healthForm">
+            <input id="allergies" placeholder="Allergies or medical notes" />
+            <input id="insurance" placeholder="Travel insurance provider / number" />
+            <button>Save health details</button>
+          </form>
+          <div class="health-advice"><b>General travel-health guidance</b><select id="healthTopic"><option value="general">General travel preparation</option><option value="mobility">Mobility and comfort</option><option value="medication">Medication planning</option><option value="heat">Heat and hydration</option></select><button type="button" id="healthAdviceBtn">Get guidance</button><p id="healthAdviceResult">This feature provides general information only—not diagnosis or emergency care.</p></div>
+        </div>
+
+        <!-- CIRCLE LIVE DISTANCE & PERSON PROXIMITY PANEL -->
+        <div class="care-panel" id="locationPanel">
+          <div class="clp-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
+            <div>
+              <p class="eyebrow">CIRCLE LIVE · REAL-TIME GPS & PERSON PROXIMITY RADAR</p>
+              <h3>Live Location Map & Distance Radar (<span class="dest-target-name">Agra</span>)</h3>
+              <p>View your live GPS position, track companions, and check real-time distance proximity.</p>
+            </div>
+            <button id="locateMeBtn" type="button" class="sign-in" style="background:#ff785e;color:#fff;border:none;font-weight:700;padding:10px 18px;cursor:pointer;border-radius:999px;">📍 Locate My Real GPS</button>
+          </div>
+
+          <!-- Interactive Leaflet Live Map -->
+          <div class="live-map-wrapper">
+            <div id="liveMap" class="live-map"></div>
+            <div class="map-legend">
+              <span class="legend-you">📍 You</span>
+              <span class="legend-companion">💖 Companion</span>
+              <span class="legend-place">🏛️ Saved Place</span>
+              <button id="legendGpsBtn" type="button" style="background:none;border:none;color:#ff785e;cursor:pointer;font-weight:700;font-size:12px;margin-left:auto;">🎯 Center on Me</button>
+            </div>
+          </div>
+
+          <!-- Add Companion Controls -->
+          <div class="share-box">
+            <input id="shareWith" placeholder="Add companion (e.g. Emma, Liam)..." />
+            <select id="shareDuration"><option>For this trip only</option><option>Next 24 hours</option><option>Until I stop it</option></select>
+            <button id="shareBtn" type="button">+ Add to Radar</button>
+          </div>
+
+          <!-- Live Radar Companion List -->
+          <div class="circle-live-people-container">
+            <div class="circle-radar-header">
+              <span>ACTIVE COMPANIONS ON MAP</span>
+              <span class="live-pulse-badge">● LIVE GPS</span>
+            </div>
+            <div class="circle-people-list" id="circlePeopleList">
+              <!-- Dynamically populated with distance in km -->
+            </div>
+          </div>
+
+          <!-- Share Live Map Link Controls -->
+          <div class="share-link-controls">
+            <div class="share-link-label"><span>🔗</span> Share Your Live Map</div>
+            <div class="share-link-row">
+              <input id="shareLinkInput" class="share-link-input" type="text" readonly value="https://tripnest.app/live/agra-link-demo" />
+              <button id="copyShareLinkBtn" class="copy-link-btn">Copy Link</button>
+            </div>
+            <div class="share-quick-btns">
+              <button id="shareWhatsAppBtn" class="share-wa-btn">💬 WhatsApp</button>
+              <button id="shareMessageBtn" class="share-msg-btn">✉ Message</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="care-panel hidden" id="budgetPanel">
+          <div>
+            <p class="eyebrow">MONEY MAP PRO · MULTI-CURRENCY & EXPENSE SPLITTER</p>
+            <h3>A plan for every rupee, dollar, or euro.</h3>
+            <p>Set a comfort budget, convert live currencies, and balance shared companion expenses.</p>
+            <div class="currency-converter-box">
+              <label>Convert Amount:</label>
+              <div class="cc-row">
+                <input id="ccAmount" type="number" value="1000" />
+                <select id="ccFrom"><option value="USD">USD ($)</option><option value="INR" selected>INR (₹)</option><option value="EUR">EUR (€)</option><option value="AED">AED</option></select>
+                <span>→</span>
+                <select id="ccTo"><option value="USD" selected>USD ($)</option><option value="INR">INR (₹)</option><option value="EUR">EUR (€)</option><option value="AED">AED</option></select>
+              </div>
+              <div class="cc-result" id="ccResult">₹1,000 INR = $12.10 USD</div>
+            </div>
+          </div>
+          <div class="budget-controls">
+            <label>Trip budget <output id="budgetValue">₹1,60,000</output><input id="budgetRange" type="range" min="30000" max="500000" value="160000" step="5000" /></label>
+            <div class="budget-bars"><span style="width:42%">Stay 42%</span><span style="width:28%">Flights 28%</span><span style="width:18%">Experiences 18%</span><span style="width:12%">Care 12%</span></div>
+            <div class="companion-splitter-box">
+              <b>👥 Companion Expense Splitter</b>
+              <div class="splitter-list" id="splitterList">
+                <div class="split-row"><span>Emma Watson (Travel Buddy)</span><strong class="owes-positive">Owes You ₹450</strong><button class="settle-btn">Settle</button></div>
+                <div class="split-row"><span>Liam Davies (Photographer)</span><strong class="owes-negative">You Owe ₹280</strong><button class="settle-btn">Settle</button></div>
+              </div>
+            </div>
+            <button id="paymentBtn" style="margin-top: 12px;">Set payment plan →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap newsletter">
+        <div><p class="eyebrow">THE NEXT PLACE</p><h2>Not sure yet? Let the right journey find you.</h2></div>
+        <button id="surpriseBtn">Surprise me ✦</button>
+      </section>
+    </main>
+
+    <!-- Dialogs -->
+    <dialog id="accountDialog">
+      <button class="close-modal" id="closeAccount" aria-label="Close">×</button>
+      <p class="eyebrow">YOUR TRIPNEST ACCOUNT</p>
+      <h2>Make every journey yours.</h2>
+      <div class="account-tabs">
+        <button class="active" data-account="signup">Create account</button>
+        <button data-account="signin">Sign in</button>
+      </div>
+      <form id="accountForm">
+        <input id="fullName" placeholder="Full name" required />
+        <input id="email" type="email" placeholder="Email address" required />
+        <input id="phone" type="tel" placeholder="Phone (optional)" />
+        <input id="password" type="password" placeholder="Password" required />
+        <button>Create my account</button>
+      </form>
+      <small>Your personal trip preferences are saved to your private TripNest profile.</small>
+    </dialog>
+
+    <dialog id="dateDialog">
+      <button class="close-modal" id="closeDate" aria-label="Close">×</button>
+      <p class="eyebrow">CHOOSE YOUR TRAVEL WINDOW</p>
+      <h2>When will you go?</h2>
+      <div class="calendar-controls">
+        <select id="monthSelect" aria-label="Month"></select>
+        <select id="yearSelect" aria-label="Year"></select>
+      </div>
+      <div class="weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+      <div class="calendar" id="calendar"></div>
+      <p class="date-status" id="dateStatus">Choose a departure date, then a return date.</p>
+      <button class="modal-main" id="applyDates">Apply travel dates</button>
+    </dialog>
+
+    <dialog id="bookingDialog" class="booking-dialog">
+      <button class="close-modal" id="closeBooking" aria-label="Close">×</button>
+      <div id="bookingContent"></div>
+    </dialog>
+
+    <!-- COMPREHENSIVE CITY & PLACE GUIDE MODAL -->
+    <dialog id="placeDetailModal" class="place-detail-modal">
+      <div class="pdm-header-wrap">
+        <button id="closePlaceDetail" class="pdm-close-btn" aria-label="Close Guide">×</button>
+        <div class="pdm-hero-banner" id="pdmHeroBanner">
+          <img id="pdmHeroImg" src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80" alt="" />
+          <div class="pdm-hero-overlay">
+            <span class="pdm-country-tag" id="pdmCountryTag">INDIA · ASIA</span>
+            <h2 id="pdmCityTitle">Agra</h2>
+            <p id="pdmTagline">Home of the Taj Mahal, Mughal monuments & legendary sweets</p>
+            <div class="pdm-quick-stats">
+              <span>⏱ <b id="pdmTimeReq">2–3 Days Optimal</b></span>
+              <span>💰 <b id="pdmDailyBudget">$35 – $140 / day</b></span>
+              <span>☀️ <b id="pdmBestSeason">Oct to March</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdm-nav-tabs">
+        <button class="pdm-tab active" data-pdm-tab="history">🏛️ History & Heritage</button>
+        <button class="pdm-tab" data-pdm-tab="foods">🍲 Famous Foods</button>
+        <button class="pdm-tab" data-pdm-tab="hotels">🏨 Hotel Arrangements & Km</button>
+        <button class="pdm-tab" data-pdm-tab="streets">🏮 Favorite Streets & Distances</button>
+        <button class="pdm-tab" data-pdm-tab="expenses">💰 Expenses & Time</button>
+      </div>
+
+      <div class="pdm-content-body" id="pdmContentBody">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <div class="pdm-sticky-footer">
+        <div class="pdm-footer-info">
+          <span>Ready to shape this journey?</span>
+          <b id="pdmFooterCityName">Agra, India Package Ready</b>
+        </div>
+        <button id="pdmApplyTripBtn" class="pdm-apply-btn">✦ Apply This City to My Trip →</button>
+      </div>
+    </dialog>
+
+    <!-- RIGHT SIDE DARK SLIDE-IN PAYMENT PANEL -->
+    <div id="paymentOverlay" class="payment-overlay"></div>
+    <aside id="paymentSidePanel" class="payment-side-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div>
+          <span class="drawer-kicker">SECURE CHECKOUT</span>
+          <h2 class="drawer-title">Trip Payment</h2>
+        </div>
+        <button id="closePaymentDrawer" class="drawer-close-btn" aria-label="Close Payment Panel">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="drawer-trip-dest">
+          <span class="dest-flag">✦</span>
+          <div>
+            <b id="drawerDestName">Agra, India</b>
+            <small id="drawerDates">18–25 October 2026 · 2 travelers</small>
+          </div>
+        </div>
+
+        <div class="drawer-section-title">Selected Arrangements</div>
+        <div class="drawer-item-list" id="drawerItemList">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div class="drawer-section-title">Payment Method</div>
+        <div class="drawer-payment-options">
+          <label class="drawer-pay-card active">
+            <input type="radio" name="drawerPayMethod" value="full" checked />
+            <div class="pay-info">
+              <b>Pay in Full</b>
+              <span>Instant confirmation · Zero extra fees</span>
+            </div>
+            <strong id="drawerFullTotal">$986</strong>
+          </label>
+          <label class="drawer-pay-card">
+            <input type="radio" name="drawerPayMethod" value="split" />
+            <div class="pay-info">
+              <b>3 Easy Payments</b>
+              <span id="drawerInstallmentText">$328 today, then 2 monthly</span>
+            </div>
+            <span class="split-tag">0% APR</span>
+          </label>
+        </div>
+
+        <div class="drawer-price-summary">
+          <div class="d-row"><span>Subtotal</span><b id="drawerSubtotal">$986</b></div>
+          <div class="d-row"><span>Taxes & Airport Surcharges</span><b id="drawerTaxes">$67</b></div>
+          <div class="d-row"><span>TripCare Protection</span><b style="color: #4eaba4;">FREE</b></div>
+          <hr class="drawer-hr" />
+          <div class="d-row total-row">
+            <span>Amount Due Today</span>
+            <strong id="drawerFinalTotal">$1,053</strong>
+          </div>
+        </div>
+
+        <!-- Order Success State -->
+        <div id="drawerSuccessState" class="drawer-success-state hidden">
+          <div class="success-icon">✓</div>
+          <h3>Booking Confirmed!</h3>
+          <p>Your journey is safely arranged. Booking ref: <b id="bookingRef">TN-94821</b></p>
+          <div class="success-actions">
+            <button id="downloadItineraryBtn" class="drawer-secondary-btn">Save Confirmation</button>
+            <button id="finishBookingBtn" class="drawer-primary-btn">Back to Trip Thread</button>
+          </div>
+        </div>
+
+        <div id="drawerActionState">
+          <button id="confirmPayDrawerBtn" class="drawer-confirm-btn">
+            <span>Confirm & Pay <strong id="drawerBtnAmount">$1,053</strong></span>
+            <span>🔒</span>
+          </button>
+          <p class="drawer-security-note">✦ 256-bit encrypted checkout demo. No card details stored.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- NEW MODAL 1: FLIGHT & TRAIN STATUS RADAR -->
+    <dialog id="flightStatusModal" class="flight-status-modal">
+      <button class="close-modal" id="closeFlightRadar" aria-label="Close">×</button>
+      <p class="eyebrow">LIVE FLIGHT & HIGH-SPEED TRAIN RADAR</p>
+      <h2>Transport Status & Digital Boarding Pass</h2>
+      <div class="fs-tabs">
+        <button class="active" data-fs-tab="flight">✈ Flights Radar</button>
+        <button data-fs-tab="train">🚆 High-Speed Trains</button>
+      </div>
+      <div class="fs-body">
+        <div class="fs-search-row">
+          <input id="fsSearchInput" placeholder="Search Flight No. (e.g. EK-502, TP-102, Gatimaan)..." />
+          <button id="fsSearchBtn">Check Status</button>
+        </div>
+        <div class="fs-list" id="fsList">
+          <!-- Dynamically Populated -->
+        </div>
+
+        <div class="seat-picker-section">
+          <b>💺 Interactive Seat Selector</b>
+          <small>Select your preferred seat for instant boarding pass generation</small>
+          <div class="seat-grid" id="seatGrid">
+            <!-- 6 Rows x 6 Seats Grid rendered by JS -->
+          </div>
+          <div class="selected-seat-info" id="selectedSeatInfo">Selected Seat: <b>12A (Window)</b></div>
+        </div>
+
+        <div class="boarding-pass-card" id="boardingPassCard">
+          <div class="bp-header">
+            <div>
+              <span class="bp-brand">✦ TRIPNEST BOARDING PASS</span>
+              <h3 id="bpFlightTitle">Gatimaan Express / Airport Connection</h3>
+            </div>
+            <span class="bp-badge">CONFIRMED</span>
+          </div>
+          <div class="bp-body">
+            <div class="bp-col"><span>PASSENGER</span><b id="bpPassenger">Traveler</b></div>
+            <div class="bp-col"><span>DESTINATION</span><b id="bpDest">Agra (AGR)</b></div>
+            <div class="bp-col"><span>SEAT</span><b id="bpSeat">12A</b></div>
+            <div class="bp-col"><span>GATE / PLATFORM</span><b>Gate 4 / Plat 1</b></div>
+            <div class="bp-col"><span>BOARDING</span><b>06:30 AM</b></div>
+            <div class="bp-col"><span>PASS CODE</span><b id="bpPassCode">TN-PASS-884</b></div>
+          </div>
+          <div class="bp-barcode-row">
+            <div class="bp-barcode">||||| | |||| ||| ||||| || |||||| ||| |||||</div>
+            <button id="downloadPassBtn" class="bp-download-btn">📲 Save Digital Pass</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- NEW MODAL 2: 3D WORLD GLOBE EXPLORER -->
+    <dialog id="globeExplorerModal" class="globe-modal">
+      <button class="close-modal" id="closeGlobeModal" aria-label="Close">×</button>
+      <div class="globe-modal-header">
+        <p class="eyebrow">INTERACTIVE 3D GLOBE EXPLORER</p>
+        <h2>200 World Destinations & Flight Trajectories</h2>
+        <div class="globe-controls">
+          <button id="toggleGlobeRotateBtn">⏸ Pause Rotation</button>
+          <button id="toggleGlobeArcsBtn">✈ Toggle Flight Arcs</button>
+          <span class="globe-hint">Click & drag to spin globe · Hover pin to inspect city</span>
+        </div>
+      </div>
+      <div class="globe-canvas-wrapper">
+        <canvas id="globeCanvas" width="760" height="460"></canvas>
+        <div class="globe-pin-info" id="globePinInfo">
+          <b id="gpiCity">Agra, India</b>
+          <span id="gpiDetail">Taj Mahal marble wonderland & Mughal heritage</span>
+          <button id="gpiExploreBtn">Explore City Guide →</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- NEW MODAL 3: OFFLINE TRAVEL PASSPORT PDF BOOKLET -->
+    <dialog id="passportPdfModal" class="passport-pdf-modal">
+      <button class="close-modal" id="closePassportPdf" aria-label="Close">×</button>
+      <div class="passport-booklet" id="passportBooklet">
+        <div class="pb-cover">
+          <span class="pb-emblem">✦</span>
+          <h2>TRIPNEST OFFICIAL TRAVEL PASSPORT</h2>
+          <small>CONFIRMED ITINERARY & EMERGENCY HEALTH PROFILE</small>
+        </div>
+        <div class="pb-body">
+          <div class="pb-section">
+            <b>1. TRIP SUMMARY & DATES</b>
+            <div class="pb-row"><span>Destination:</span><b id="pdfDest">Agra, India</b></div>
+            <div class="pb-row"><span>Dates:</span><b id="pdfDates">18 Oct – 25 Oct 2026</b></div>
+            <div class="pb-row"><span>Travelers:</span><b id="pdfTravelers">2 Travelers</b></div>
+            <div class="pb-row"><span>Booking Ref:</span><b id="pdfRef">TN-94821</b></div>
+          </div>
+          <div class="pb-section">
+            <b>2. TRANSPORT & HOTEL VOUCHER</b>
+            <div class="pb-row"><span>Flight / Express:</span><b id="pdfFlight">Gatimaan Express (Executive)</b></div>
+            <div class="pb-row"><span>Accommodation:</span><b id="pdfHotel">The Heritage Haveli Resort</b></div>
+          </div>
+          <div class="pb-section">
+            <b>3. EMERGENCY HEALTH PASSPORT & CIRCLE LIVE</b>
+            <div class="pb-row"><span>Emergency Health Notes:</span><b id="pdfHealth">Saved on private TripNest profile</b></div>
+            <div class="pb-row"><span>Radar Circle Active:</span><b>Emma Watson, Liam Davies (Live GPS)</b></div>
+          </div>
+          <div class="pb-qr-footer">
+            <div class="qr-placeholder">
+              <div class="qr-box">■ □ ■<br />□ ■ □<br />■ □ ■</div>
+              <small>Scan for Digital Verification</small>
+            </div>
+            <button id="printPassportBtn" class="print-passport-btn">🖨️ Print / Save as PDF</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- AGENTIC AI CONCIERGE DRAWER & OVERLAY -->
+    <div id="agentChatOverlay" class="agent-chat-overlay" aria-hidden="true"></div>
+    <aside id="agentChatDrawer" class="agent-chat-drawer" aria-label="TripNest AI Concierge">
+      <div class="drawer-header">
+        <div class="agent-drawer-title">
+          <span class="agent-bot-avatar">✦</span>
+          <div>
+            <h3>TripNest AI Concierge</h3>
+            <span class="agent-sub-status">7 Specialized Agents Active</span>
+          </div>
+        </div>
+        <button class="close-drawer" id="closeAgentChatBtn" aria-label="Close Concierge">✕</button>
+      </div>
+
+      <div class="agent-chat-messages" id="agentChatMessages">
+        <div class="agent-msg bot">
+          <div class="agent-msg-avatar">✦</div>
+          <div class="agent-msg-bubble">
+            <p>Hello! I am your <strong>TripNest Autonomous Travel Concierge</strong>. I coordinate our network of 7 specialized AI agents to help you plan, discover, and optimize every aspect of your journey.</p>
+            <small class="agent-tool-tag">● Multi-Agent Orchestrator</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-chat-quick-actions">
+        <button class="chat-quick-pill" data-chat-ask="What is the live weather forecast and packing checklist for Agra?">🌤️ Weather & Packing</button>
+        <button class="chat-quick-pill" data-chat-ask="Can you recommend the top authentic street food and dinner spots?">🍲 Food & Dining</button>
+        <button class="chat-quick-pill" data-chat-ask="Optimize my budget and show the cost breakdown.">💰 Budget Optimizer</button>
+        <button class="chat-quick-pill" data-chat-ask="What are the visa requirements and safety health protocols?">🩺 Visa & Safety</button>
+      </div>
+
+      <div class="agent-chat-input-row">
+        <input type="text" id="agentChatInput" placeholder="Ask AI Agents anything (e.g. weather, food, routes, safety)..." />
+        <button id="sendAgentChatBtn" aria-label="Send message">➔</button>
+      </div>
+    </aside>
+
+    <!-- Floating AI Chatbot Launcher -->
+    <div class="floating-ai-hub" id="floatingAiHub">
+      <button class="ai-hub-chat-btn" id="openFloatingChatBtn" title="Chat with AI Concierge" aria-label="Open AI Assistant">
+        <span class="ai-hub-pulse"></span>
+        <span class="ai-hub-chat-label"><span class="sparkle">✦</span> AI Concierge</span>
+      </button>
+    </div>
+
+
+    <!-- ======================================================== -->
+    <!-- ✦ TRIPNEST OMNISUITE & INNOVATION LAB (27 PRO TOOLS) -->
+    <!-- ======================================================== -->
+    <dialog id="omniSuiteModal" class="omni-suite-modal">
+      <div class="omni-modal-shell">
+        <header class="omni-modal-header">
+          <div class="omni-title-wrap">
+            <div class="omni-badge">✦ PRO TRAVEL ENGINE</div>
+            <h2>OmniSuite & Innovation Lab</h2>
+            <p>27 Specialized Pro Tools & Unconventional Experiences for <span class="dest-target-name">Agra, India</span></p>
+          </div>
+          <div class="omni-header-controls">
+            <div class="omni-search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="omniToolSearch" placeholder="Search 27 tools (e.g., time-travel, cinema, packing, plugs, binaural)..." />
+            </div>
+            <button class="close-modal omni-close-btn" id="closeOmniSuite" aria-label="Close OmniSuite">✕</button>
+          </div>
+        </header>
+
+        <div class="omni-modal-body">
+          <!-- Sidebar Navigation Tabs -->
+          <nav class="omni-sidebar">
+            <div class="omni-sidebar-group">
+              <span class="omni-group-label">✦ INNOVATION LAB</span>
+              <button class="omni-tab-btn active" data-tool="time-travel"><span class="t-icon">🕰️</span> Time-Travel Slider</button>
+              <button class="omni-tab-btn" data-tool="cinema"><span class="t-icon">🎬</span> Cinema SetJetting</button>
+              <button class="omni-tab-btn" data-tool="pantone"><span class="t-icon">🎨</span> Pantone Palette</button>
+              <button class="omni-tab-btn" data-tool="serendipity"><span class="t-icon">🧭</span> Serendipity Compass</button>
+              <button class="omni-tab-btn" data-tool="binaural"><span class="t-icon">🧠</span> Binaural Jet Lag Audio</button>
+              <button class="omni-tab-btn" data-tool="coffee"><span class="t-icon">☕</span> Coffee & Tea Rituals</button>
+              <button class="omni-tab-btn" data-tool="souvenir"><span class="t-icon">📦</span> Souvenir Inspector</button>
+            </div>
+
+            <div class="omni-sidebar-group">
+              <span class="omni-group-label">⚡ SMART UTILITIES</span>
+              <button class="omni-tab-btn" data-tool="packing"><span class="t-icon">🧳</span> Climate Packing List</button>
+              <button class="omni-tab-btn" data-tool="raincheck"><span class="t-icon">☔</span> Rain Check Plan B</button>
+              <button class="omni-tab-btn" data-tool="plugs"><span class="t-icon">🔌</span> Global Plugs & Voltage</button>
+              <button class="omni-tab-btn" data-tool="tipping"><span class="t-icon">💵</span> Tipping & Bill Calculator</button>
+              <button class="omni-tab-btn" data-tool="scams"><span class="t-icon">🚨</span> Tourist Scam Radar</button>
+              <button class="omni-tab-btn" data-tool="dietary"><span class="t-icon">🥗</span> Dietary & Allergy Card</button>
+              <button class="omni-tab-btn" data-tool="esim"><span class="t-icon">📶</span> eSIM Data Planner</button>
+              <button class="omni-tab-btn" data-tool="baggage"><span class="t-icon">✈️</span> Baggage Allowance</button>
+            </div>
+
+            <div class="omni-sidebar-group">
+              <span class="omni-group-label">🎧 AUDIO & VOICE</span>
+              <button class="omni-tab-btn" data-tool="audiodocent"><span class="t-icon">🏛️</span> Spoken Monument Docent</button>
+              <button class="omni-tab-btn" data-tool="phrasebook"><span class="t-icon">🗣️</span> Voice Phrasebook</button>
+            </div>
+
+            <div class="omni-sidebar-group">
+              <span class="omni-group-label">🌱 BUDGET, ECO & TIME</span>
+              <button class="omni-tab-btn" data-tool="carbon"><span class="t-icon">🌱</span> Carbon Footprint & Offset</button>
+              <button class="omni-tab-btn" data-tool="frugalsplurge"><span class="t-icon">⚖️</span> Frugal vs Splurge Slider</button>
+              <button class="omni-tab-btn" data-tool="timeline"><span class="t-icon">⏰</span> Visual Day Timeline</button>
+              <button class="omni-tab-btn" data-tool="countdown"><span class="t-icon">⏳</span> Countdown & Passport Rule</button>
+              <button class="omni-tab-btn" data-tool="jetlag"><span class="t-icon">😴</span> Circadian Jet Lag Reset</button>
+            </div>
+
+            <div class="omni-sidebar-group">
+              <span class="omni-group-label">📸 CREATIVE & ARTIFACTS</span>
+              <button class="omni-tab-btn" data-tool="postcard"><span class="t-icon">📸</span> Digital Postcard Studio</button>
+              <button class="omni-tab-btn" data-tool="goldenhour"><span class="t-icon">🌅</span> Golden Hour Sun Tracker</button>
+              <button class="omni-tab-btn" data-tool="unesco"><span class="t-icon">🏛️</span> UNESCO Site Badges</button>
+              <button class="omni-tab-btn" data-tool="stargazing"><span class="t-icon">🌌</span> Stargazing & Moon Phase</button>
+              <button class="omni-tab-btn" data-tool="pocketzine"><span class="t-icon">📜</span> Foldable Pocket Brochure</button>
+            </div>
+          </nav>
+
+          <!-- Main Interactive Viewport -->
+          <main class="omni-viewport" id="omniViewport">
+            <!-- Dynamic Content rendered by app.js -->
+          </main>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Floating Quick-Access Dock: AI Trip Concierge Chatbot -->
+    <div class="ai-chat-widget-container" id="aiChatWidgetContainer">
+      <!-- Slide-up AI Chat Drawer -->
+      <div class="ai-chat-drawer hidden" id="aiChatDrawer" role="region" aria-label="AI Concierge Chat">
+        <div class="ai-chat-drawer-header">
+          <div class="ai-chat-drawer-title">
+            <span class="ai-chat-badge">✦ TRIPNEST AI</span>
+            <h3>AI Trip Concierge</h3>
+          </div>
+          <button type="button" class="ai-chat-close-btn" id="closeAiChatBtn" aria-label="Close chat">×</button>
+        </div>
+
+        <div class="ai-chat-drawer-body">
+          <div class="ai-chat-drawer-actions">
+            <button id="voiceSpeakBtn" type="button" class="voice-btn">🎙️ Voice Concierge</button>
+            <button id="openPassportPdfBtn" type="button" class="passport-pdf-btn">📄 Offline PDF</button>
+          </div>
+
+          <div class="ai-prompts" id="aiConcierge">
+            <span>Quick Prompts:</span>
+            <button type="button" data-prompt="Make this trip more romantic with a surprise dinner">✨ Romantic evening</button>
+            <button type="button" data-prompt="Find accessible, low-walking experiences">♿ Low-walking plan</button>
+            <button type="button" data-prompt="Build a food-first day under $120">🍜 Food-first, under $120</button>
+            <button type="button" data-prompt="Find hidden gems, sunset spots and local markets">🌅 Hidden gems & sunsets</button>
+          </div>
+
+          <div class="ai-response" id="aiResponse">
+            <b>TripNest AI Concierge</b>
+            <span>Hello! Ask me anything in your own words to shape your Trip Thread.</span>
+          </div>
+        </div>
+
+        <div class="ai-chat-drawer-footer">
+          <form id="aiForm" class="ai-chat-form">
+            <div class="ai-input-wrap">
+              <span class="ai-input-icon">✨</span>
+              <input id="aiInput" placeholder="Ask AI Concierge anything..." autocomplete="off" />
+            </div>
+            <button type="submit" class="ai-chat-submit" title="Send Prompt">→</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Floating Toggle Pill Button -->
+      <button class="omni-floating-btn" id="toggleAiChatBtn" aria-label="Open AI Concierge Chat" title="Open AI Trip Concierge Chatbot">
+        <span class="omni-floating-sparkle" aria-hidden="true">✨</span>
+        <span class="omni-floating-label">AI Concierge</span>
+        <span class="omni-floating-badge">Live Chat</span>
+      </button>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <footer class="wrap main-site-footer">
+      <div class="footer-col brand-col">
+        <a class="brand" href="#top"><span>✦</span> tripnest</a>
+        <p class="footer-tagline">Made for a more considered way to go.</p>
+      </div>
+      <div class="footer-col contact-col">
+        <span class="footer-col-title">Designed & Created by</span>
+        <strong class="creator-name">Sabrin S</strong>
+        <div class="contact-details">
+          <a href="tel:6380903181" class="contact-item">📞 6380903181</a>
+          <a href="mailto:sabrincse004@gmail.com" class="contact-item">✉️ sabrincse004@gmail.com</a>
+        </div>
+      </div>
+      <div class="footer-col copyright-col">
+        <p>© 2026 TripNest. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="js/app.js"></script>
+    <script src="js/omnisuite.js"></script>
+  </body>
+</html>
