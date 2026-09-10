@@ -71,47 +71,6 @@ Visit `http://127.0.0.1:8000` to access TripNest locally!
 
 ---
 
-## 🌐 How to Deploy (Step-by-Step)
-
-### Option 1: Render.com (Recommended — 100% Free)
-1. Push your repository to **GitHub**.
-2. Sign up at [Render.com](https://render.com).
-3. Click **New +** → **Web Service**.
-4. Connect your **GitHub repository**.
-5. Configure the deployment settings:
-   - **Name**: `tripnest`
-   - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python -m uvicorn travel_api:app --host 0.0.0.0 --port $PORT`
-6. Click **Create Web Service**. Render will build and deploy your live URL in 1-2 minutes!
-
----
-
-### Option 2: Railway.app (Instant 1-Click Deployment)
-1. Sign up at [Railway.app](https://railway.app).
-2. Click **New Project** → **Deploy from GitHub repo**.
-3. Select your `tripnest` repository.
-4. Railway will auto-detect Python, install `requirements.txt`, and generate your live public URL automatically.
-
----
-
-### Option 3: Docker Container Deployment
-Create a `Dockerfile` in the project root:
-
-```dockerfile
-FROM python:3.10-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 8000
-
-CMD ["python", "-m", "uvicorn", "travel_api:app", "--host", "0.0.0.0", "--port", "8000"]
-```
 
 Build and launch:
 ```bash
