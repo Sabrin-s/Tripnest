@@ -92,6 +92,50 @@ const OmniSuite = {
       market: 'https://images.unsplash.com/photo-1561839561-b13bcfe7c7fd?w=800&h=400&fit=crop',
       caption: 'Colosseum, Rome'
     },
+    Tokyo: {
+      hero: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1528164344705-475426879c0d?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=800&h=400&fit=crop',
+      caption: 'Tokyo Tower & Shibuya, Tokyo'
+    },
+    'New York': {
+      hero: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?w=800&h=400&fit=crop',
+      caption: 'Empire State & Manhattan, New York'
+    },
+    Barcelona: {
+      hero: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1562883676-8c7feb83f09b?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800&h=400&fit=crop',
+      caption: 'Sagrada Familia, Barcelona'
+    },
+    Jaipur: {
+      hero: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1587135941948-670b381f08ce?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1474401915596-3c5adf84ef03?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1532664189809-02133fee698d?w=800&h=400&fit=crop',
+      caption: 'Hawa Mahal & Amer Fort, Jaipur'
+    },
     _default: {
       hero: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&h=400&fit=crop',
       landmark: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=400&fit=crop',
@@ -106,12 +150,26 @@ const OmniSuite = {
   },
 
   getImg(city, type) {
-    const imgs = this.placeImages[city] || this.placeImages._default;
+    const matchedKey = this.getMatchedKey(city);
+    const imgs = this.placeImages[matchedKey] || this.placeImages._default;
     return imgs[type] || this.placeImages._default[type];
   },
 
   getCaption(city) {
-    return (this.placeImages[city] || this.placeImages._default).caption;
+    const matchedKey = this.getMatchedKey(city);
+    return (this.placeImages[matchedKey] || this.placeImages._default).caption;
+  },
+
+  getMatchedKey(city) {
+    if (!city) return '_default';
+    const cLower = city.toLowerCase().trim();
+    for (const key of Object.keys(this.placeImages)) {
+      if (key === '_default') continue;
+      if (cLower.includes(key.toLowerCase()) || key.toLowerCase().includes(cLower)) {
+        return key;
+      }
+    }
+    return '_default';
   },
 
   makeBanner(city, type, sublabel) {
@@ -135,7 +193,7 @@ const OmniSuite = {
   getCurrentCity() {
     const dest = document.querySelector('#destination') ? document.querySelector('#destination').value.trim() : 'Agra, India';
     const city = dest.split(',')[0].trim();
-    return city || 'Agra';
+    return this.getMatchedKey(city) !== '_default' ? this.getMatchedKey(city) : (city || 'Agra');
   },
 
   async fetchKnowledge() {

@@ -13,6 +13,177 @@ const OmniSuite = {
   binauralFreq: { type: 'delta', beat: 2.0, base: 198, name: 'Deep Sleep & Jet Lag Recovery' },
   knowledge: null,
 
+  /* High-quality destination images from Unsplash (royalty-free) */
+  placeImages: {
+    Agra: {
+      hero: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1587135941948-670b381f08ce?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1474401915596-3c5adf84ef03?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1532664189809-02133fee698d?w=800&h=400&fit=crop',
+      caption: 'Taj Mahal, Agra'
+    },
+    Paris: {
+      hero: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1509439581779-6298f75bf6e5?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1541264161754-445bbdd7de52?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1555992457-b8fefdd09a93?w=800&h=400&fit=crop',
+      caption: 'Eiffel Tower, Paris'
+    },
+    Lisbon: {
+      hero: 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1548707309-dcebeab426c8?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1504544750208-dc0358e63f7f?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1513735492934-86600b9e1ae1?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1536663815808-535e2280d2c2?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1573455494060-c5595004fb6c?w=800&h=400&fit=crop',
+      caption: 'Alfama District, Lisbon'
+    },
+    Kyoto: {
+      hero: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&h=400&fit=crop',
+      caption: 'Fushimi Inari, Kyoto'
+    },
+    Dubai: {
+      hero: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1606491956689-2ea866880049?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1546412414-e1885259563a?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1597659840241-37e2b9c2f55f?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1512632578888-169bbbc64f33?w=800&h=400&fit=crop',
+      caption: 'Burj Khalifa, Dubai'
+    },
+    London: {
+      hero: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1529180184525-78f99adb8e98?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1577003811926-53b288a6e5d0?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1520986606214-8b456906c813?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1500380804539-4e1e8c1e7118?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1533929736562-87d5e2e6583a?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1506501139174-099022df5260?w=800&h=400&fit=crop',
+      caption: 'Big Ben, London'
+    },
+    Rome: {
+      hero: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1555992828-ca4dbe41d294?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1544175832-cba2ce0a1b56?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1561839561-b13bcfe7c7fd?w=800&h=400&fit=crop',
+      caption: 'Colosseum, Rome'
+    },
+    Tokyo: {
+      hero: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1528164344705-475426879c0d?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=800&h=400&fit=crop',
+      caption: 'Tokyo Tower & Shibuya, Tokyo'
+    },
+    'New York': {
+      hero: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?w=800&h=400&fit=crop',
+      caption: 'Empire State & Manhattan, New York'
+    },
+    Barcelona: {
+      hero: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1562883676-8c7feb83f09b?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=800&h=400&fit=crop',
+      caption: 'Sagrada Familia, Barcelona'
+    },
+    Jaipur: {
+      hero: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1587135941948-670b381f08ce?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1474401915596-3c5adf84ef03?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1532664189809-02133fee698d?w=800&h=400&fit=crop',
+      caption: 'Hawa Mahal & Amer Fort, Jaipur'
+    },
+    _default: {
+      hero: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&h=400&fit=crop',
+      landmark: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=400&fit=crop',
+      food: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=300&fit=crop',
+      street: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=400&fit=crop',
+      sunset: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=900&h=400&fit=crop',
+      night: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800&h=400&fit=crop',
+      culture: 'https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?w=800&h=400&fit=crop',
+      market: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=400&fit=crop',
+      caption: 'Explore the World'
+    }
+  },
+
+  getImg(city, type) {
+    const matchedKey = this.getMatchedKey(city);
+    const imgs = this.placeImages[matchedKey] || this.placeImages._default;
+    return imgs[type] || this.placeImages._default[type];
+  },
+
+  getCaption(city) {
+    const matchedKey = this.getMatchedKey(city);
+    return (this.placeImages[matchedKey] || this.placeImages._default).caption;
+  },
+
+  getMatchedKey(city) {
+    if (!city) return '_default';
+    const cLower = city.toLowerCase().trim();
+    for (const key of Object.keys(this.placeImages)) {
+      if (key === '_default') continue;
+      if (cLower.includes(key.toLowerCase()) || key.toLowerCase().includes(cLower)) {
+        return key;
+      }
+    }
+    return '_default';
+  },
+
+  makeBanner(city, type, sublabel) {
+    const src = this.getImg(city, type);
+    const caption = this.getCaption(city);
+    return `
+      <div class="tool-dest-banner">
+        <img src="${src}" alt="${caption}" loading="lazy" />
+        <div class="banner-overlay">
+          <div class="banner-label">${caption}<small>${sublabel || ''}</small></div>
+        </div>
+      </div>`;
+  },
+
   async init() {
     this.bindEvents();
     await this.fetchKnowledge();
@@ -22,7 +193,7 @@ const OmniSuite = {
   getCurrentCity() {
     const dest = document.querySelector('#destination') ? document.querySelector('#destination').value.trim() : 'Agra, India';
     const city = dest.split(',')[0].trim();
-    return city || 'Agra';
+    return this.getMatchedKey(city) !== '_default' ? this.getMatchedKey(city) : (city || 'Agra');
   },
 
   async fetchKnowledge() {
@@ -235,6 +406,7 @@ const OmniSuite = {
     };
 
     return `
+      ${this.makeBanner(city, 'landmark', 'Step back through centuries of history')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Innovation Lab · Historical Immersion</span>
         <h3>Time-Travel Era Slider</h3>
@@ -309,6 +481,7 @@ const OmniSuite = {
     ];
 
     return `
+      ${this.makeBanner(city, 'street', 'Walk the scenes of legendary cinema')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Innovation Lab · Cinematic Travel</span>
         <h3>Cinema SetJetting Location Scout</h3>
@@ -342,6 +515,7 @@ const OmniSuite = {
     ];
 
     return `
+      ${this.makeBanner(city, 'culture', 'Capture the city\'s chromatic soul')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Innovation Lab · Visual Aesthetics</span>
         <h3>Pantone City Color Palette & Travel Stylist</h3>
@@ -386,6 +560,7 @@ const OmniSuite = {
   // 4. Serendipity Compass
   renderSerendipity(city) {
     return `
+      ${this.makeBanner(city, 'street', 'Discover hidden gems beyond the guidebook')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Innovation Lab · Mindful Discovery</span>
         <h3>Anti-Itinerary Serendipity Compass</h3>
@@ -574,7 +749,9 @@ const OmniSuite = {
       "Portugal": { beverage: "Bica", social_rule: "Order 'uma bica' with a warm pastel de nata dusted with cinnamon." }
     };
 
+    const city = this.getCurrentCity();
     return `
+      ${this.makeBanner(city, 'food', 'Sip like a local — rituals that go beyond flavor')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Innovation Lab · Cultural Gastronomy</span>
         <h3>Global Coffee & Tea Rituals</h3>
@@ -597,6 +774,7 @@ const OmniSuite = {
   // 7. Souvenir Inspector
   renderSouvenirInspector(city) {
     return `
+      ${this.makeBanner(city, 'market', 'Navigate markets with confidence')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Innovation Lab · Heritage Protection</span>
         <h3>Souvenir Authenticity & Customs Inspector</h3>
@@ -637,6 +815,7 @@ const OmniSuite = {
     ];
 
     return `
+      ${this.makeBanner(city, 'hero', 'Pack smart for your destination')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Smart Utilities · Weather-Adaptive</span>
         <h3>Climate-Adaptive Smart Packing Assistant</h3>
@@ -1477,6 +1656,7 @@ const OmniSuite = {
   // 24. Golden Hour & Sun Tracker
   renderGoldenHour(city) {
     return `
+      ${this.makeBanner(city, 'sunset', 'Chase the perfect golden light')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Photography & Optics · Sun Calculator</span>
         <h3>Golden Hour Sun Tracker & Vantage Guide</h3>
@@ -1517,6 +1697,7 @@ const OmniSuite = {
     ];
 
     return `
+      ${this.makeBanner(city, 'landmark', 'Explore certified world heritage sites')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Gamification · UNESCO Heritage</span>
         <h3>UNESCO World Heritage Tracker & Badges</h3>
@@ -1540,6 +1721,7 @@ const OmniSuite = {
   // 26. Stargazing & Moon Phase
   renderStargazing(city) {
     return `
+      ${this.makeBanner(city, 'night', 'Uncover the celestial canopy above')}
       <div class="tool-hero">
         <span class="tool-eyebrow">Astrotourism & Night Sky</span>
         <h3>Stargazing, Moon Phase & Bortle Dark Sky Radar</h3>
