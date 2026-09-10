@@ -41,6 +41,7 @@
 * **Maps & Visualizations**: Leaflet.js, Three.js / Canvas 3D rendering
 * **Fonts & Styling**: Playfair Display, DM Sans, HSL Tailored Palettes, Dynamic Glassmorphism
 
+--- 
 tripnest/
 ├── travel_api.py           # FastAPI backend server & API endpoints
 ├── chroma_service.py       # Vector DB integration for AI Concierge
