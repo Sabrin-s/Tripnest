@@ -41,25 +41,6 @@
 * **Maps & Visualizations**: Leaflet.js, Three.js / Canvas 3D rendering
 * **Fonts & Styling**: Playfair Display, DM Sans, HSL Tailored Palettes, Dynamic Glassmorphism
 
---- 
-## Repository Structure
-tripnest/
-├── travel_api.py           # FastAPI backend server & API endpoints
-├── chroma_service.py       # Vector DB integration for AI Concierge
-├── requirements.txt        # Python dependency specifications
-├── trip-data.json          # Pre-loaded destination & travel data
-├── static/
-│   ├── index.html          # Main application page
-│   ├── css/                # CSS design system & feature modules
-│   │   ├── styles.css
-│   │   ├── styles-features.css
-│   │   ├── styles-livemap.css
-│   │   └── styles-override.css
-│   └── js/
-│       ├── app.js          # Core frontend application logic
-│       └── omnisuite.js    # Pro Suite 27-tool modal engine
-└── README.md               # Repository documentation
-
 ---
 
 👤 Author & Contact Information
