@@ -42,6 +42,7 @@
 * **Fonts & Styling**: Playfair Display, DM Sans, HSL Tailored Palettes, Dynamic Glassmorphism
 
 --- 
+## Repository Structure
 tripnest/
 ├── travel_api.py           # FastAPI backend server & API endpoints
 ├── chroma_service.py       # Vector DB integration for AI Concierge
@@ -58,7 +59,6 @@ tripnest/
 │       ├── app.js          # Core frontend application logic
 │       └── omnisuite.js    # Pro Suite 27-tool modal engine
 └── README.md               # Repository documentation
-
 
 ---
 
