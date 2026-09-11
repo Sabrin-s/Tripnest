@@ -104,7 +104,6 @@ tripnest/
 Designed & Developed with ❤️ by **Sabrin S**
 
 * **Creator**: Sabrin S
-* **Phone**: +91 6380903181
 * **Email**: [sabrincse004@gmail.com](mailto:sabrincse004@gmail.com)
 
 ---
